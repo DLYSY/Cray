@@ -1,0 +1,33 @@
+[package]
+name = "Cray"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+tokio = { version = "1", features = ["full"] }
+hyper = { version = "1", features = ["full"] }
+hyper-util = { version = "0.1", features = ["full"] }
+http-body-util = "0.1"
+bytes = "1"
+uuid = "1"
+futures-util = "0.3"
+tokio-util = { version = "0.7", features = ["io"] }
+anyhow = "1.0" # 用于简化错误处理
+log = "0.4"
+env_logger = "0.11"
+parking_lot = "*"
+
+[profile.release]
+strip = true             # 自动从二进制文件去除符号信息.
+opt-level = "s"
+codegen-units = 1
+lto = "fat"              # 完全 LTO（编译慢但性能更好）
+panic = "abort"
+overflow-checks = false  # 禁用整数溢出检查（提升速度，需确保安全）
+debug = false            # 禁用调试符号（减小体积）
+debug-assertions = false # 是否启用 debug-assertions（在 release 中通常关闭，以避免额外检查开销）
+incremental = false      # 关闭增量编译，减少内存占用
+
+# 为所有依赖也强制设置 opt-level
+[profile.release.package."*"]
+opt-level = "s"
