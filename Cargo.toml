@@ -4,18 +4,26 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-tokio = { version = "1", features = ["full"] }
-hyper = { version = "1", features = ["full"] }
-hyper-util = { version = "0.1", features = ["full"] }
-http-body-util = "0.1"
-bytes = "1"
-uuid = "1"
+# runtime
+tokio = { version = "1", features = [
+    "net",
+    "io-util",
+    "rt-multi-thread",
+    "macros",
+    "parking_lot",
+] }
+tokio-util = { version = "*", features = ["io"] }
 futures-util = "0.3"
-tokio-util = { version = "0.7", features = ["io"] }
-anyhow = "1.0" # 用于简化错误处理
-log = "0.4"
-env_logger = "0.11"
 parking_lot = "*"
+# http
+hyper = { version = "*", features = ["http1", "http2", "server"] }
+hyper-util = { version = "*", features = ["server-auto", "tokio"] }
+http-body-util = "*"
+# data
+bytes = "1"
+uuid = "*"
+anyhow = "1.0" # 用于简化错误处理
+
 
 [profile.release]
 strip = true             # 自动从二进制文件去除符号信息.
