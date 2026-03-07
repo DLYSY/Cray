@@ -27,11 +27,12 @@ regex = "*"
 url = "*"
 # random
 rand = "*"
-rand_core = "*"
-rand_xoshiro = "*"
 # log
 flexi_logger = "*"
 log = "*"
+
+[target.'cfg(target_env = "musl")'.dependencies]
+mimalloc = { version = "0.1", features = ["v3"] }
 
 
 

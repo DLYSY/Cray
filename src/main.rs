@@ -14,15 +14,14 @@ use tokio::net::{TcpListener, TcpStream};
 use tokio_util::io::{ReaderStream, StreamReader};
 use uuid::Uuid;
 
-use parking_lot::Mutex;
-use rand::Rng;
-use rand_core::SeedableRng;
-use rand_xoshiro::SplitMix64;
-
 use url::Host;
 
 mod init_conf;
 mod outbound;
+
+#[cfg(target_env = "musl")]
+#[global_allocator]
+static GLOBAL: mimalloc::MiMalloc = mimalloc::MiMalloc;
 
 #[allow(unused)]
 #[derive(Debug)]
@@ -51,7 +50,7 @@ impl Vless {
         let cmd = inbound_body.read_u8().await?;
         let port = inbound_body.read_u16().await?;
         let addr_type = inbound_body.read_u8().await?;
-        
+
         let address = if cmd == 1 && (addr_type == 0 || addr_type == 2) {
             let addr_len = inbound_body.read_u8().await?;
             let mut address = vec![0; addr_len as usize];
@@ -59,7 +58,7 @@ impl Vless {
             Host::parse(String::from_utf8(address)?.as_str())?
         } else if addr_type == 3 {
             Host::Ipv6(inbound_body.read_u128().await?.into())
-        } else if cmd ==2 {
+        } else if cmd == 2 {
             Host::Ipv4(inbound_body.read_u32().await?.into())
         } else {
             unreachable!()
@@ -177,11 +176,10 @@ async fn fetch(
             tokio::io::copy(&mut outbound_reader, &mut response_writer)
         )
     });
-    static RNG: LazyLock<Mutex<SplitMix64>> =
-        LazyLock::new(|| Mutex::new(SplitMix64::from_os_rng()));
+
     let res = hyper::Response::builder()
         .status(hyper::StatusCode::OK)
-        .header("X-Padding", "X".repeat(RNG.lock().random_range(100..1000)))
+        .header("X-Padding", "X".repeat(rand::random_range(100..1000)))
         .body(stream_body)?;
 
     Ok(res)
