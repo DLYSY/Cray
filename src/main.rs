@@ -61,7 +61,7 @@ impl Vless {
         } else if cmd == 2 {
             Host::Ipv4(inbound_body.read_u32().await?.into())
         } else {
-            unreachable!()
+            unreachable!("address type:{}, cmd:{}", addr_type, cmd)
         };
         // let address = match cmd {
         //     1 => {
