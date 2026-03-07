@@ -95,7 +95,7 @@ impl Vless {
 async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
     init_conf::init_config()?;
     let listener = TcpListener::bind(SocketAddr::from((
-        [127, 0, 0, 1],
+        [0, 0, 0, 0],
         init_conf::CONFIG.get().unwrap().port,
     )))
     .await?;
