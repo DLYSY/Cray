@@ -23,6 +23,16 @@ http-body-util = "*"
 bytes = "1"
 uuid = "*"
 anyhow = "1.0" # 用于简化错误处理
+regex = "*"
+url = "*"
+# random
+rand = "*"
+rand_core = "*"
+rand_xoshiro = "*"
+# log
+flexi_logger = "*"
+log = "*"
+
 
 
 [profile.release]
