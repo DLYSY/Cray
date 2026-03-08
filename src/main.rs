@@ -179,7 +179,6 @@ async fn main() -> std::io::Result<()> {
     let config = init_conf::CONFIG.get().unwrap();
     HttpServer::new(|| App::new().service(fetch))
         .bind(("0.0.0.0", config.port))?
-        .bind(("[::]", config.port))?
         .run()
         .await
 }
