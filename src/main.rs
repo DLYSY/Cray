@@ -12,6 +12,10 @@ use uuid::Uuid;
 
 mod init_conf;
 
+#[cfg(target_env = "musl")]
+#[global_allocator]
+static GLOBAL: mimalloc::MiMalloc = mimalloc::MiMalloc;
+
 #[allow(unused)]
 #[derive(Debug, Clone)]
 struct Vless {
