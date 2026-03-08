@@ -10,17 +10,12 @@ tokio = { version = "1", features = [
     "io-util",
     "rt-multi-thread",
     "macros",
-    "parking_lot",
 ] }
 tokio-util = { version = "*", features = ["io"] }
 futures-util = "0.3"
-parking_lot = "*"
 # http
-hyper = { version = "*", features = ["http1", "http2", "server"] }
-hyper-util = { version = "*", features = ["server-auto", "tokio"] }
-http-body-util = "*"
+actix-web = "4"
 # data
-bytes = "1"
 uuid = "*"
 anyhow = "1.0" # 用于简化错误处理
 regex = "*"
@@ -33,8 +28,6 @@ log = "*"
 
 [target.'cfg(target_env = "musl")'.dependencies]
 mimalloc = { version = "0.1", features = ["v3"] }
-
-
 
 [profile.release]
 strip = true             # 自动从二进制文件去除符号信息.

@@ -1,6 +1,18 @@
 use std::{str::FromStr, sync::OnceLock};
 use uuid::Uuid;
 
+pub struct EnvConfig {
+    pub port: u16,
+    pub uuid: Uuid,
+    pub mode: XHTTPMode,
+}
+
+enum XHTTPMode {
+    packet_up,
+    stream_up,
+    stream_one,
+}
+
 pub static CONFIG: OnceLock<EnvConfig> = OnceLock::new();
 
 pub fn init_config() -> Result<(), &'static str> {
@@ -33,17 +45,7 @@ pub fn init_config() -> Result<(), &'static str> {
     }).map_err(|_|"全局配置已被初始化")
 }
 
-pub struct EnvConfig {
-    pub port: u16,
-    pub uuid: Uuid,
-    pub mode: XHTTPMode,
-}
 
-enum XHTTPMode {
-    packet_up,
-    stream_up,
-    stream_one,
-}
 
 // use flexi_logger::{
 //     Age, Cleanup, Criterion, Duplicate, FileSpec, Logger, LoggerHandle, Naming, WriteMode,
